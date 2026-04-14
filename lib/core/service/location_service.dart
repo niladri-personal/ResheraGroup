@@ -40,13 +40,11 @@ class LocationService {
 
       // Format the address
       return [
-        place.name,
-        place.street,
         place.locality,
         place.administrativeArea,
         place.postalCode,
         place.country
-      ].where((element) => element != null && element!.isNotEmpty)
+      ].where((element) => element != null && element.isNotEmpty)
           .join(', ');
     } catch (e) {
       return "Unable to fetch address.";

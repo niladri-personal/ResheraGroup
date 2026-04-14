@@ -114,7 +114,6 @@ class _GroceryItemsScreensState extends State<GroceryItemsScreens> {
                   children: [
 
                     const DeliverAddressWidget(
-                      address: "Katju Nagar,kolkata -7...",
                     ),
 
                     Divider(color: const Color(0xffceaef3).withOpacity(0.2)),

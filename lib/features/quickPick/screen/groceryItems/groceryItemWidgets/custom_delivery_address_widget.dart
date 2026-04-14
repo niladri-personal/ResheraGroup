@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:resheragroup/core/service/location_service.dart';
 
 class DeliverAddressWidget extends StatefulWidget {
-  final String address;
+  final String? address;
 
   const DeliverAddressWidget({
     super.key,
-    required this.address,
+     this.address,
   });
 
   @override
@@ -21,7 +22,7 @@ class _DeliverAddressWidgetState
   @override
   void initState() {
     super.initState();
-    _selectedAddress = widget.address;
+    _selectedAddress = widget.address ?? "Select Address";
   }
 
   /// Opens Bottom Sheet
@@ -109,12 +110,37 @@ class _DeliverAddressWidgetState
                     Icons.arrow_forward_ios,
                     size: 16,
                   ),
-                  onTap: () {
-                    setState(() {
-                      _selectedAddress =
-                      "Current Location, Kolkata";
-                    });
+                  onTap: () async {
+                    // Close Bottom Sheet
                     Navigator.pop(context);
+
+                    // Show loading in main widget
+                    setState(() {
+                      _isLoading = true;
+                      _selectedAddress="Fetching location...";
+                    });
+
+                    try {
+                      final String address =
+                      await LocationService.getCurrentAddress();
+
+                      if (!mounted) return;
+
+                      setState(() {
+                        _selectedAddress = address;
+                        _isLoading = false;
+                      });
+                    } catch (e) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Failed to fetch location"),
+                        ),
+                      );
+                    }
                   },
                 ),
 
