@@ -13,6 +13,19 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Fix for plugins that expect 'flutter' property
+subprojects {
+    setupFlutterVersions(project)
+}
+
+def setupFlutterVersions(Project project) {
+    project.ext.flutter = [
+        compileSdkVersion: 35,
+        minSdkVersion: 21,
+        targetSdkVersion: 35,
+    ]
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
